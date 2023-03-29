@@ -1,27 +1,28 @@
 import os
 import configparser
 # pyright: reportUndefinedVariable=false, reportGeneralTypeIssues=false
+# Error detected while processing CursorHold Autocommands for "*":
 
 
 def load_api_key():
-    config_name = 'setup.cfg'
     config = configparser.ConfigParser()
-    plugin_root = vim.eval('s:plugin_root')
-    config_path = os.path.join(plugin_root, config_name)
+    config_path = os.path.join(vim.eval('s:plugin_root'), 'setup.cfg')
 
     try:
         config.read(config_path)
-        api_key = config.get('openai', 'api_key').strip()
+        return config.get('openai', 'api_key').strip()
     except Exception as e:
-        raise ValueError(f'error reading {config_name}: {str(e)}')
-    return api_key
+        raise ValueError(f'error reading setup.cfg: {str(e)}')
 
 
 def make_options():
-    options_default = vim.eval("options_default")
-    options_user = vim.eval("options")
-    options = {**options_default, **options_user}
-    options['request_timeout'] = float(options['request_timeout'])
-    options['temperature'] = float(options['temperature'])
-    options['max_tokens'] = int(options['max_tokens'])
+    options = {**vim.eval("options_default"), **vim.eval("options")}
+
+    try:
+        options['request_timeout'] = float(options['request_timeout'])
+        options['temperature'] = float(options['temperature'])
+        options['max_tokens'] = int(options['max_tokens'])
+    except ValueError as e:
+        raise ValueError(f'Error converting option values: {str(e)}')
+
     return options

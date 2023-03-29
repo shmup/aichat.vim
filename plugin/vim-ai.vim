@@ -1,27 +1,27 @@
 let g:vim_ai_complete_default = {
-\  "options": {
-\    "model": "text-davinci-003",
-\    "max_tokens": 1000,
-\    "temperature": 0.1,
-\    "request_timeout": 20,
-\  },
-\}
+      \  "options": {
+      \    "model": "text-davinci-003",
+      \    "max_tokens": 1000,
+      \    "temperature": 0.1,
+      \    "request_timeout": 20,
+      \  },
+      \}
 let g:vim_ai_edit_default = {
-\  "options": {
-\    "model": "text-davinci-003",
-\    "max_tokens": 1000,
-\    "temperature": 0.1,
-\    "request_timeout": 20,
-\  },
-\}
+      \  "options": {
+      \    "model": "text-davinci-003",
+      \    "max_tokens": 1000,
+      \    "temperature": 0.1,
+      \    "request_timeout": 20,
+      \  },
+      \}
 let g:vim_ai_chat_default = {
-\  "options": {
-\    "model": "gpt-3.5-turbo",
-\    "max_tokens": 1000,
-\    "temperature": 1,
-\    "request_timeout": 20,
-\  },
-\}
+      \  "options": {
+      \    "model": "gpt-3.5-turbo",
+      \    "max_tokens": 1000,
+      \    "temperature": 1,
+      \    "request_timeout": 20,
+      \  },
+      \}
 if !exists('g:vim_ai_complete')
   let g:vim_ai_complete = {"options":{}}
 endif
@@ -31,7 +31,6 @@ endif
 if !exists('g:vim_ai_chat')
   let g:vim_ai_chat = {"options":{}}
 endif
-
 
 let s:plugin_root = expand('<sfile>:p:h:h')
 let s:complete_py = s:plugin_root . "/py/complete.py"
