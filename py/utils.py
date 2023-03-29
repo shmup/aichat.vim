@@ -1,15 +1,21 @@
-import sys
 import os
+import configparser
+# pyright: reportUndefinedVariable=false, reportGeneralTypeIssues=false
+
 
 def load_api_key():
-    config_file_path = os.path.join(os.path.expanduser("~"), ".config/openai.token")
-    api_key = os.getenv("OPENAI_API_KEY")
+    config_name = 'setup.cfg'
+    config = configparser.ConfigParser()
+    plugin_root = vim.eval('s:plugin_root')
+    config_path = os.path.join(plugin_root, config_name)
+
     try:
-        with open(config_file_path, 'r') as file:
-            api_key = file.read()
-    except Exception:
-        pass
-    return api_key.strip()
+        config.read(config_path)
+        api_key = config.get('openai', 'api_key').strip()
+    except Exception as e:
+        raise ValueError(f'error reading {config_name}: {str(e)}')
+    return api_key
+
 
 def make_options():
     options_default = vim.eval("options_default")
