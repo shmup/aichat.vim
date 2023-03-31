@@ -1,5 +1,7 @@
-syntax match aichatRole ">>> system"
-syntax match aichatRole ">>> user"
-syntax match aichatRole "<<< assistant"
+syntax match system /^>>>\ssystem$/
+syntax match user /^>>>\suser$/
+syntax match assistant /^<<<\sassistant$/
 
-highlight default link aichatRole Comment
+highlight system ctermfg=Red guifg=Red
+highlight user ctermfg=Green guifg=Green
+highlight assistant ctermfg=Yellow guifg=Yellow
