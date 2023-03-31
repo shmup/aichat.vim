@@ -37,25 +37,22 @@ let s:complete_py = s:plugin_root . "/py/complete.py"
 let s:chat_py = s:plugin_root . "/py/chat.py"
 
 function! ScratchWindow()
-  below new
-  setlocal buftype=nofile
-  setlocal bufhidden=hide
-  setlocal noswapfile
-  setlocal ft=aichat
+  vnew
+  setlocal buftype=nofile bufhidden=hide noswapfile ft=aichat
 endfunction
 
-function! MakePrompt(is_selection, lines, instruction)
+function! MakePrompt(selected_lines, lines, instruction)
   let lines = trim(join(a:lines, "\n"))
   let instruction = trim(a:instruction)
-  let delimiter = instruction != "" && a:is_selection ? ":\n" : ""
-  let selection = a:is_selection || instruction == "" ? lines : ""
+  let delimiter = instruction != "" && a:selected_lines ? ":\n" : ""
+  let selection = a:selected_lines || instruction == "" ? lines : ""
   let prompt = join([instruction, delimiter, selection], "")
   return prompt
 endfunction
 
-function! AIRun(is_selection, ...) range
+function! AIRun(selected_lines, ...) range
   let lines = getline(a:firstline, a:lastline)
-  let prompt = MakePrompt(a:is_selection, lines, a:0 ? a:1 : "")
+  let prompt = MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
   let options_default = g:vim_ai_complete_default['options']
   let options = g:vim_ai_complete['options']
   let cursor_on_empty_line = trim(join(lines, "\n")) == ""
@@ -70,8 +67,8 @@ function! AIRun(is_selection, ...) range
   set nopaste
 endfunction
 
-function! AIEditRun(is_selection, ...) range
-  let prompt = MakePrompt(a:is_selection, getline(a:firstline, a:lastline), a:0 ? a:1 : "")
+function! AIEditRun(selected_lines, ...) range
+  let prompt = MakePrompt(a:selected_lines, getline(a:firstline, a:lastline), a:0 ? a:1 : "")
   let options_default = g:vim_ai_edit_default['options']
   let options = g:vim_ai_edit['options']
   set paste
@@ -80,17 +77,17 @@ function! AIEditRun(is_selection, ...) range
   set nopaste
 endfunction
 
-function! AIChatRun(is_selection, ...) range
+function! AIChatRun(selected_lines, ...) range
   let lines = getline(a:firstline, a:lastline)
   set paste
   let is_outside_of_chat_window = search('^>>> user$', 'nw') == 0
   if is_outside_of_chat_window
     call ScratchWindow()
     let prompt = ""
-    if a:0 || a:is_selection
-      let prompt = MakePrompt(a:is_selection, lines, a:0 ? a:1 : "")
+    if a:0 || a:selected_lines
+      let prompt = MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
     endif
-    execute "normal i>>> user\n\n" . prompt
+    execute "normal i>>> system\nYou are a world class expert.\n>>> user\n" . prompt
   endif
 
   let options_default = g:vim_ai_chat_default['options']

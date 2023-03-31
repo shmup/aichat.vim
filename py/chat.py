@@ -20,7 +20,7 @@ for line in lines:
         messages[-1]["content"] += "\n" + line
 
 if not messages:
-    messages.append({"role": "user", "content": ">>> user\n\n" + file_content})
+    messages.append({"role": "user", "content": ">>> user\n" + file_content})
 
 def send_vim_command(command):
     vim.command("redraw")
@@ -28,7 +28,7 @@ def send_vim_command(command):
 
 try:
     if messages[-1]["content"].strip():
-        send_vim_command("normal! Go\n<<< assistant\n\n")
+        send_vim_command("normal! Go<<< assistant\n")
         send_vim_command("echo 'Answering...'")
 
         response = openai.ChatCompletion.create(messages=messages, stream=True, **options)
@@ -40,7 +40,7 @@ try:
                 continue
             generating_text = True
             send_vim_command(f"normal! a{text}")
-        send_vim_command("normal! a\n\n>>> user\n\n")
+        send_vim_command("normal! a\n>>> user\n")
 except KeyboardInterrupt:
     send_vim_command("normal! a Ctrl-C...")
 except openai.error.Timeout:
