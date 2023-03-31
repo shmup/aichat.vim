@@ -16,7 +16,7 @@ let g:vim_ai_edit_default = {
       \}
 let g:vim_ai_chat_default = {
       \  "options": {
-      \    "model": "gpt-3.5-turbo",
+      \    "model": "gpt-4",
       \    "max_tokens": 1000,
       \    "temperature": 1,
       \    "request_timeout": 20,
