@@ -3,34 +3,44 @@ import openai
 
 plugin_root = vim.eval("s:plugin_root")
 vim.command(f"py3file {plugin_root}/py/utils.py")
-options = make_options()
+
+
+def get_role(line):
+    if line.startswith(">>> system"):
+        return "system"
+    elif line.startswith(">>> user"):
+        return "user"
+    elif line.startswith("<<< assistant"):
+        return "assistant"
+    else:
+        return None
+
+
+def create_message(role, content=""):
+    return {"role": role, "content": content}
+
+
 file_content = vim.eval('trim(join(getline(1, "$"), "\n"))')
-openai.api_key = load_api_key()
 lines = file_content.splitlines()
 messages = []
 
 for line in lines:
-    if line.startswith(">>> system"):
-        messages.append({"role": "system", "content": ""})
-    elif line.startswith(">>> user"):
-        messages.append({"role": "user", "content": ""})
-    elif line.startswith("<<< assistant"):
-        messages.append({"role": "assistant", "content": ""})
+    role = get_role(line)
+    if role:
+        messages.append(create_message(role))
     elif messages:
-        messages[-1]["content"] += "\n" + line
+        messages[-1]["content"] += "\n" + line.strip()
 
 if not messages:
-    messages.append({"role": "user", "content": ">>> user\n" + file_content})
-
-def send_vim_command(command):
-    vim.command("redraw")
-    vim.command(command)
+    messages.append(create_message("user", ">>> user\n" + file_content.strip()))
 
 try:
     if messages[-1]["content"].strip():
         send_vim_command("normal! Go<<< assistant\n")
         send_vim_command("echo 'Answering...'")
 
+        options = make_options()
+        openai.api_key = load_api_key()
         response = openai.ChatCompletion.create(messages=messages, stream=True, **options)
 
         generating_text = False

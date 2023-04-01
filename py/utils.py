@@ -26,3 +26,8 @@ def make_options():
         raise ValueError(f'Error converting option values: {str(e)}')
 
     return options
+
+def send_vim_command(command):
+    vim.command("redraw")
+    vim.command(command)
+
