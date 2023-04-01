@@ -2,6 +2,8 @@
 
 Complete text and chat with GPT in Vim using OpenAI.
 
+Forked from [madox2/vim-ai](https://github.com/madox2/vim-ai) and being tailored to my wants.
+
 ## Features
 
 - Generate text or code, answer questions
@@ -10,24 +12,18 @@ Complete text and chat with GPT in Vim using OpenAI.
 
 ![vim-ai demo](./demo.gif)
 
+## Requirements
+
+ - vim with python3 support
+ - openai pythong package
+
 ## Installation
 
-vim-ai requires Vim compiled with python3 support and the [openai-python](https://github.com/openai/openai-python) library (version 0.27+).
+Run `make` to install openai or manage it yourself (tldr `pip install openai`)
 
-```sh
-# configure openai api key https://platform.openai.com/account/api-keys
-echo "YOUR_OPENAI_API_KEY" > ~/.config/openai.token
+Update [setup.cfg](setup.cfg) with your API key you can get here:
 
-# alternatively using environment variable
-export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
-```
-
-Add plugin to your `.vimrc` using `vim-plug`:
-
-```vim
-" ./install.sh script will automatically install openai-python
-Plug 'madox2/vim-ai', { 'do': './install.sh' }
-```
+    https://platform.openai.com/account/api-keys
 
 ## Usage
 
@@ -84,18 +80,17 @@ Map keys in your `.vimrc` to trigger `:AI` command.
 
 ```vim
 " complete text on the current line or in visual selection
-nnoremap <leader>a :AI<CR>
-xnoremap <leader>a :AI<CR>
+nnoremap <space>a :AI<CR>
+xnoremap <space>a :AI<CR>
 
 " edit text with a custom prompt
-xnoremap <leader>s :AIEdit fix grammar and spelling<CR>
-nnoremap <leader>s :AIEdit fix grammar and spelling<CR>
+xnoremap <space>s :AIEdit fix grammar and spelling<CR>
+nnoremap <space>s :AIEdit fix grammar and spelling<CR>
 
 " trigger chat
-xnoremap <leader>c :AIChat<CR>
-nnoremap <leader>c :AIChat<CR>
+xnoremap <space>c :AIChat<CR>
+nnoremap <space>c :AIChat<CR>
 ```
-
 ### Completion configuration
 
 Request to the OpenAI API can be configured for each command.
@@ -158,7 +153,6 @@ command! -range -nargs=? AICode <line1>,<line2>call AIRun(<range>, "Programming 
 
 " available functions are: AIRun, AIEditRun, AIChatRun
 ```
-
 
 ## Important Disclaimer
 
