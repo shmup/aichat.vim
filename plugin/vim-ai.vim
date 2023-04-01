@@ -96,6 +96,29 @@ function! AIChatRun(selected_lines, ...) range
   set nopaste
 endfunction
 
+" Function that saves a SCRATCH buffer to a specified path
+function! SaveAIChatFunction(filename)
+  let ext = ".aichat"
+
+  let target_directory = expand("$HOME/.vim/tools/gpt/")
+  if !isdirectory(target_directory)
+    call mkdir(target_directory, "p")
+  endif
+
+  let target_path = target_directory . a:filename
+  if expand("%:e") !=# ext
+    let target_path .= ext
+  endif
+
+  " often it's a nofile &buftype so we always use this technique
+  let buffer_content = join(getline(1, "$"), "\n")
+
+  call writefile(split(buffer_content, "\n"), target_path)
+  echo "File saved to: " . target_path
+  execute 'edit ' . target_path
+endfunction
+
+command! -nargs=1 -complete=file_in_path SaveAIChat call SaveAIChatFunction(<f-args>)
 command! -range -nargs=? AI <line1>,<line2>call AIRun(<range>, <f-args>)
 command! -range -nargs=? AIEdit <line1>,<line2>call AIEditRun(<range>, <f-args>)
 command! -range -nargs=? AIChat <line1>,<line2>call AIChatRun(<range>, <f-args>)
