@@ -1,5 +1,3 @@
-source <sfile>:p:h/utility.vim
-
 let g:system_seed = 'You are a clean and concise world-class software engineer, ready to help with programming-related questions.'
 
 let g:vim_ai_complete_default_options = {
@@ -45,7 +43,7 @@ endfunction
 
 function! AIRun(selected_lines, ...) range
   let lines = getline(a:firstline, a:lastline)
-  let prompt = MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
+  let prompt = aichat#MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
   let options_default = g:vim_ai_complete_default_options
   let options = g:vim_ai_complete_options
   let cursor_on_empty_line = trim(join(lines, "\n")) == ""
@@ -61,7 +59,7 @@ function! AIRun(selected_lines, ...) range
 endfunction
 
 function! AIEditRun(selected_lines, ...) range
-  let prompt = MakePrompt(a:selected_lines, getline(a:firstline, a:lastline), a:0 ? a:1 : "")
+  let prompt = aichat#MakePrompt(a:selected_lines, getline(a:firstline, a:lastline), a:0 ? a:1 : "")
   let options_default = g:vim_ai_edit_default_options
   let options = g:vim_ai_edit_options
   set paste
@@ -75,10 +73,10 @@ function! AIChatRun(selected_lines, ...) range
   set paste
   let is_outside_of_chat_window = search('^>>> user$', 'nw') == 0
   if is_outside_of_chat_window
-    call ScratchWindow()
+    call aichat#ScratchWindow()
     let prompt = ""
     if a:0 || a:selected_lines
-      let prompt = MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
+      let prompt = aichat#MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
     endif
     execute "normal i>>> system\n" . g:system_seed . "\n>>> user\n" . prompt
   endif
