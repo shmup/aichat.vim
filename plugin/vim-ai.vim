@@ -1,3 +1,5 @@
+source <sfile>:p:h/utility.vim
+
 let g:vim_ai_complete_default = {
       \  "options": {
       \    "model": "text-davinci-003",
@@ -35,11 +37,6 @@ endif
 let s:plugin_root = expand('<sfile>:p:h:h')
 let s:complete_py = s:plugin_root . "/py/complete.py"
 let s:chat_py = s:plugin_root . "/py/chat.py"
-
-function! ScratchWindow()
-  vnew
-  setlocal buftype=nofile bufhidden=hide noswapfile ft=aichat
-endfunction
 
 function! MakePrompt(selected_lines, lines, instruction)
   let lines = trim(join(a:lines, "\n"))
@@ -94,28 +91,6 @@ function! AIChatRun(selected_lines, ...) range
   let options = g:vim_ai_chat['options']
   execute "py3file " . s:chat_py
   set nopaste
-endfunction
-
-" Function that saves a SCRATCH buffer to a specified path
-function! SaveAIChatFunction(filename)
-  let ext = ".aichat"
-
-  let target_directory = expand("$HOME/.vim/tools/gpt/")
-  if !isdirectory(target_directory)
-    call mkdir(target_directory, "p")
-  endif
-
-  let target_path = target_directory . a:filename
-  if expand("%:e") !=# ext
-    let target_path .= ext
-  endif
-
-  " often it's a nofile &buftype so we always use this technique
-  let buffer_content = join(getline(1, "$"), "\n")
-
-  call writefile(split(buffer_content, "\n"), target_path)
-  echo "File saved to: " . target_path
-  execute 'edit ' . target_path
 endfunction
 
 command! -nargs=1 -complete=file_in_path SaveAIChat call SaveAIChatFunction(<f-args>)
