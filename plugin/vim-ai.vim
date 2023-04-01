@@ -1,5 +1,7 @@
 source <sfile>:p:h/utility.vim
 
+let g:system_seed = 'You are a clean and concise world-class software engineer, ready to help with programming-related questions.'
+
 let g:vim_ai_complete_default = {
       \  "options": {
       \    "model": "text-davinci-003",
@@ -18,7 +20,7 @@ let g:vim_ai_edit_default = {
       \}
 let g:vim_ai_chat_default = {
       \  "options": {
-      \    "model": "gpt-4",
+      \    "model": "gpt-3.5-turbo",
       \    "max_tokens": 1000,
       \    "temperature": 1,
       \    "request_timeout": 20,
@@ -84,7 +86,7 @@ function! AIChatRun(selected_lines, ...) range
     if a:0 || a:selected_lines
       let prompt = MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
     endif
-    execute "normal i>>> system\nYou are a world class expert.\n>>> user\n" . prompt
+    execute "normal i>>> system\n" . g:system_seed . "\n>>> user\n" . prompt
   endif
 
   let options_default = g:vim_ai_chat_default['options']
