@@ -2,38 +2,32 @@ source <sfile>:p:h/utility.vim
 
 let g:system_seed = 'You are a clean and concise world-class software engineer, ready to help with programming-related questions.'
 
-let g:vim_ai_complete_default = {
-      \  "options": {
-      \    "model": "text-davinci-003",
-      \    "max_tokens": 1000,
-      \    "temperature": 0.1,
-      \    "request_timeout": 20,
-      \  },
+let g:vim_ai_complete_default_options = {
+      \  "model": "text-davinci-003",
+      \  "max_tokens": 1000,
+      \  "temperature": 0.1,
+      \  "request_timeout": 20,
       \}
-let g:vim_ai_edit_default = {
-      \  "options": {
-      \    "model": "text-davinci-003",
-      \    "max_tokens": 1000,
-      \    "temperature": 0.1,
-      \    "request_timeout": 20,
-      \  },
+let g:vim_ai_edit_default_options = {
+      \  "model": "text-davinci-003",
+      \  "max_tokens": 1000,
+      \  "temperature": 0.1,
+      \  "request_timeout": 20,
       \}
-let g:vim_ai_chat_default = {
-      \  "options": {
-      \    "model": "gpt-3.5-turbo",
-      \    "max_tokens": 1000,
-      \    "temperature": 1,
-      \    "request_timeout": 20,
-      \  },
+let g:vim_ai_chat_default_options = {
+      \  "model": "gpt-3.5-turbo",
+      \  "max_tokens": 1000,
+      \  "temperature": 1,
+      \  "request_timeout": 20,
       \}
-if !exists('g:vim_ai_complete')
-  let g:vim_ai_complete = {"options":{}}
+if !exists('g:vim_ai_complete_options')
+  let g:vim_ai_complete_options = {}
 endif
-if !exists('g:vim_ai_edit')
-  let g:vim_ai_edit = {"options":{}}
+if !exists('g:vim_ai_edit_options')
+  let g:vim_ai_edit_options = {}
 endif
-if !exists('g:vim_ai_chat')
-  let g:vim_ai_chat = {"options":{}}
+if !exists('g:vim_ai_chat_options')
+  let g:vim_ai_chat_options = {}
 endif
 
 let s:plugin_root = expand('<sfile>:p:h:h')
@@ -52,8 +46,8 @@ endfunction
 function! AIRun(selected_lines, ...) range
   let lines = getline(a:firstline, a:lastline)
   let prompt = MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
-  let options_default = g:vim_ai_complete_default['options']
-  let options = g:vim_ai_complete['options']
+  let options_default = g:vim_ai_complete_default_options
+  let options = g:vim_ai_complete_options
   let cursor_on_empty_line = trim(join(lines, "\n")) == ""
   set paste
   if cursor_on_empty_line
@@ -68,8 +62,8 @@ endfunction
 
 function! AIEditRun(selected_lines, ...) range
   let prompt = MakePrompt(a:selected_lines, getline(a:firstline, a:lastline), a:0 ? a:1 : "")
-  let options_default = g:vim_ai_edit_default['options']
-  let options = g:vim_ai_edit['options']
+  let options_default = g:vim_ai_edit_default_options
+  let options = g:vim_ai_edit_options
   set paste
   execute "normal! " . a:firstline . "GV" . a:lastline . "Gc"
   execute "py3file " . s:complete_py
@@ -89,8 +83,8 @@ function! AIChatRun(selected_lines, ...) range
     execute "normal i>>> system\n" . g:system_seed . "\n>>> user\n" . prompt
   endif
 
-  let options_default = g:vim_ai_chat_default['options']
-  let options = g:vim_ai_chat['options']
+  let options_default = g:vim_ai_chat_default_options
+  let options = g:vim_ai_chat_options
   execute "py3file " . s:chat_py
   set nopaste
 endfunction
