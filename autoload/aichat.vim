@@ -1,7 +1,7 @@
 let s:plugin_root = expand('<sfile>:p:h:h')
 
-function! aichat#ScratchWindow()
-  vnew
+function! aichat#ScratchWindow(viewType = 'enew')
+  execute a:viewType == 'enew' ? 'enew' : 'vnew'
   setlocal buftype=nofile bufhidden=hide noswapfile ft=aichat
 endfunction
 

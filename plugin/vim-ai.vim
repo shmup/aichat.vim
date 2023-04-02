@@ -68,15 +68,15 @@ function! AIEditRun(selected_lines, ...) range
   set nopaste
 endfunction
 
-function! AIChatRun(selected_lines, ...) range
+function! AIChatRun(viewType, selected_lines, ...) range
   let lines = getline(a:firstline, a:lastline)
   set paste
   let is_outside_of_chat_window = search('^>>> user$', 'nw') == 0
   if is_outside_of_chat_window
-    call aichat#ScratchWindow()
+    call aichat#ScratchWindow(a:viewType)
     let prompt = ""
     if a:0 || a:selected_lines
-      let prompt = aichat#MakePrompt(a:selected_lines, lines, a:0 ? a:1 : "")
+      let prompt = aichat#MakePrompt(a:selected_lines, lines, a:1 ? a:2 : "")
     endif
     execute "normal i>>> system\n" . g:system_seed . "\n>>> user\n" . prompt
   endif
@@ -90,4 +90,5 @@ endfunction
 command! -nargs=1 -complete=file_in_path SaveAIChat call aichat#SaveAIChat(<f-args>)
 command! -range -nargs=? AI <line1>,<line2>call AIRun(<range>, <f-args>)
 command! -range -nargs=? AIEdit <line1>,<line2>call AIEditRun(<range>, <f-args>)
-command! -range -nargs=? AIChat <line1>,<line2>call AIChatRun(<range>, <f-args>)
+command! -range -nargs=? AIChat <line1>,<line2>call AIChatRun('enew', <range>, <f-args>)
+command! -range -nargs=? AIVnewChat <line1>,<line2>call AIChatRun('vnew', <range>, <f-args>)
