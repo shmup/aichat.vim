@@ -33,7 +33,7 @@ function! aichat#ParseConfigData(config_data, section, key) abort
   return ''
 endfunction
 
-function! aichat#SaveAIChatFunction(filename)
+function! aichat#SaveAIChat(filename)
   let ext = ".aichat"
   let setup_cfg_path = s:plugin_root . "/setup.cfg"
   let cfg_data = aichat#ReadConfigFile(setup_cfg_path)

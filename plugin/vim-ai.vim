@@ -87,7 +87,7 @@ function! AIChatRun(selected_lines, ...) range
   set nopaste
 endfunction
 
-command! -nargs=1 -complete=file_in_path SaveAIChat call SaveAIChatFunction(<f-args>)
+command! -nargs=1 -complete=file_in_path SaveAIChat call aichat#SaveAIChat(<f-args>)
 command! -range -nargs=? AI <line1>,<line2>call AIRun(<range>, <f-args>)
 command! -range -nargs=? AIEdit <line1>,<line2>call AIEditRun(<range>, <f-args>)
 command! -range -nargs=? AIChat <line1>,<line2>call AIChatRun(<range>, <f-args>)
