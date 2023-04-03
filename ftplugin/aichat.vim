@@ -3,7 +3,7 @@ let s:config_data = aichat#ReadConfigFile(s:plugin_root . '/setup.cfg')
 let s:cache_path = aichat#ParseConfigData(s:config_data, 'openai', 'cache_path')
 
 " Save the buffer to cache
-function! SaveBufferToCache()
+function! aichat#SaveBufferToCache()
   if &buftype != 'nofile' | return | endif
 
   let l:buffer_content = join(getline(1, "$"), "\n")
@@ -21,7 +21,7 @@ endfunction
 if !empty(s:cache_path)
   augroup aichat_autocmds
     autocmd!
-    autocmd BufWinLeave <buffer> call SaveBufferToCache()
+    autocmd BufWinLeave <buffer> call aichat#SaveBufferToCache()
   augroup END
 endif
 

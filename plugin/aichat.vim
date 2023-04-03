@@ -32,7 +32,7 @@ let s:plugin_root = expand('<sfile>:p:h:h')
 let s:complete_py = s:plugin_root . "/py/complete.py"
 let s:chat_py = s:plugin_root . "/py/chat.py"
 
-function! MakePrompt(selected_lines, lines, instruction)
+function! aichat#MakePrompt(selected_lines, lines, instruction)
   let lines = trim(join(a:lines, "\n"))
   let instruction = trim(a:instruction)
   let delimiter = instruction != "" && a:selected_lines ? ":\n" : ""
