@@ -1,4 +1,4 @@
-let g:system_seed = 'You are a clean and concise world-class software engineer, ready to help with programming-related, bash, and vim questions.'
+let g:system_seed = 'You are a clean and concise software engineer, ready to help with programming-related, linux/fedora, and vim question.'
 
 let g:vim_ai_complete_default_options = {
       \  "model": "text-davinci-003",

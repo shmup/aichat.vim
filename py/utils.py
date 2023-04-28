@@ -27,7 +27,41 @@ def make_options():
 
     return options
 
+
 def send_vim_command(command):
     vim.command("redraw")
     vim.command(command)
 
+
+def render_text_chunks(chunks):
+    generating_text = False
+    for text in chunks:
+        if not text.strip() and not generating_text:
+            continue  # trim newlines from the beginning
+        generating_text = True
+        vim.command("normal! a" + text)
+        vim.command("redraw")
+
+
+def parse_chat_messages(chat_content):
+    lines = chat_content.splitlines()
+    messages = []
+    for line in lines:
+        if line.startswith(">>> system"):
+            messages.append({"role": "system", "content": ""})
+            continue
+        if line.startswith(">>> user"):
+            messages.append({"role": "user", "content": ""})
+            continue
+        if line.startswith("<<< assistant"):
+            messages.append({"role": "assistant", "content": ""})
+            continue
+        if not messages:
+            continue
+        messages[-1]["content"] += "\n" + line
+
+    for message in messages:
+        # strip newlines from the content as it causes empty responses
+        message["content"] = message["content"].strip()
+
+    return messages
