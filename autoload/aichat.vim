@@ -24,9 +24,9 @@ function! aichat#ParseConfigData(config_data, section, key) abort
   for line in a:config_data
     if in_section
       if line =~# '^' . a:key . '\s*=\s*'
-        return matchstr(line, '=.*$')[1:]
+        return matchstr(line, '\s*=\s*.*$')[2:]
       endif
-    elseif line =~# '^\[' . a:section . ']$'
+    elseif line =~# '^\[' . a:section . ']'
       let in_section = 1
     endif
   endfor

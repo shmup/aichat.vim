@@ -15,7 +15,7 @@ function! aichat#SaveBufferToCache()
     call mkdir(l:cache_directory, 'p')
   endif
 
-  call writefile(split(l:buffer_content, "\n"), l:target_path)
+  call writefile(split(l:buffer_content, "\n"), trim(l:target_path))
 endfunction
 
 if !empty(s:cache_path)
