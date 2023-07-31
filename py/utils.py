@@ -47,13 +47,13 @@ def parse_chat_messages(chat_content):
     lines = chat_content.splitlines()
     messages = []
     for line in lines:
-        if line.startswith(">>> system"):
+        if line.startswith("### system"):
             messages.append({"role": "system", "content": ""})
             continue
-        if line.startswith(">>> user"):
+        if line.startswith("### user"):
             messages.append({"role": "user", "content": ""})
             continue
-        if line.startswith("<<< assistant"):
+        if line.startswith("### assistant"):
             messages.append({"role": "assistant", "content": ""})
             continue
         if not messages:

@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead *.aichat setfiletype aichat
+autocmd BufNewFile,BufRead *.aichat setfiletype markdown.aichat

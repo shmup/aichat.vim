@@ -1,4 +1,4 @@
-let g:system_seed = 'You are a clean and concise software engineer, ready to help with programming-related, linux/fedora, and vim question.'
+let g:system_seed = "You are a clean and concise software engineer, ready to help with programming-related, fedora, and vim. Bullet list the summary of what you're going to show me, and then if needed, show the codeblocks."
 
 let g:vim_ai_complete_default_options = {
       \  "model": "text-davinci-003",
@@ -71,14 +71,14 @@ endfunction
 function! AIChatRun(viewType, selected_lines, ...) range
   let lines = getline(a:firstline, a:lastline)
   set paste
-  let is_outside_of_chat_window = search('^>>> user$', 'nw') == 0
+  let is_outside_of_chat_window = search('^### user$', 'nw') == 0
   if is_outside_of_chat_window
     call aichat#ScratchWindow(a:viewType)
     let prompt = ""
     if a:0 || a:selected_lines
       let prompt = aichat#MakePrompt(a:selected_lines, lines, a:1 ? a:2 : "")
     endif
-    execute "normal i>>> system\n" . g:system_seed . "\n>>> user\n" . prompt
+    execute "normal i### system\n" . g:system_seed . "\n### user\n" . prompt
   endif
 
   let options_default = g:vim_ai_chat_default_options

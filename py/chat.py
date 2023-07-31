@@ -8,7 +8,7 @@ messages = parse_chat_messages(file_content)
 
 try:
     if messages[-1]["content"].strip():
-        send_vim_command("normal! Go<<< assistant\n")
+        send_vim_command("normal! Go### assistant\n")
         send_vim_command("echo 'Answering...'")
         request_options = make_options()
         openai.api_key = load_api_key()
@@ -21,7 +21,7 @@ try:
         text_chunks = map(lambda resp: resp['choices'][0]['delta'].get('content', ''),
                           response)
         render_text_chunks(text_chunks)
-        send_vim_command("normal! a\n>>> user\n")
+        send_vim_command("normal! a\n### user\n")
 except KeyboardInterrupt:
     send_vim_command("normal! a Ctrl-C...")
 except openai.error.Timeout:
