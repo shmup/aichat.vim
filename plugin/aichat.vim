@@ -1,5 +1,4 @@
-let g:system_seed = "You are a clean and concise software engineer, ready to help with programming-related, fedora, and vim. Bullet list the summary of what you're going to show me, and then if needed, show the codeblocks."
-
+let g:system_seed = "You are a world class software and systems engineer. When the reply merits codeblocks, you just show the lines that change (when applicable)."
 let g:vim_ai_complete_default_options = {
       \  "model": "text-davinci-003",
       \  "max_tokens": 1000,
