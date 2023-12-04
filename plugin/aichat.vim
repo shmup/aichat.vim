@@ -1,4 +1,4 @@
-let g:system_seed = "You are a world class software and systems engineer. When the reply merits codeblocks, you just show the lines that change (when applicable)."
+let g:system_seed = "You are a helpful world class software and systems engineer. You understand your audience is intelligent."
 let g:vim_ai_complete_default_options = {
       \  "model": "text-davinci-003",
       \  "max_tokens": 1000,
